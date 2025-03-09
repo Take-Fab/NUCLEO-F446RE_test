@@ -1,6 +1,7 @@
-*.txt
-*.pdf
+.settings/
 *.cyclo
+*.launch
+*.list
 
 # Prerequisites
 *.d
@@ -45,7 +46,6 @@
 *.su
 *.idb
 *.pdb
-*.launch
 
 # Kernel Module Compile Results
 *.mod*
