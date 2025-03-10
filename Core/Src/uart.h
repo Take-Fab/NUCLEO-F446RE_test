@@ -11,7 +11,7 @@
 #include "main.h"
 #include "stdbool.h"
 
-int16_t uart_init(UART_HandleTypeDef huart);
+int16_t uart_init(UART_HandleTypeDef *huart);
 int16_t uart_transmit(uint8_t *pData, uint16_t Size);
 int16_t uart_receive(uint8_t *pData, uint16_t Size);
 

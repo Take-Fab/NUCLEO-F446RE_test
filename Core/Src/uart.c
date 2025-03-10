@@ -8,7 +8,7 @@
 #include "uart.h"
 
 
-static UART_HandleTypeDef huart_id;
+static UART_HandleTypeDef *huart_id;
 
 /**
  * @brief  UART送信
@@ -19,7 +19,7 @@ int16_t uart_transmit(uint8_t *pData, uint16_t Size)
 {
   HAL_StatusTypeDef status;
 
-  status = HAL_UART_Transmit(&huart_id, pData, Size, HAL_MAX_DELAY);
+  status = HAL_UART_Transmit(huart_id, pData, Size, HAL_MAX_DELAY);
 
   return (int16_t)status;
 }
@@ -35,7 +35,7 @@ int16_t uart_receive(uint8_t *pData, uint16_t Size)
 {
   HAL_StatusTypeDef status;
 
-  status = HAL_UART_Receive(&huart_id, pData, Size, HAL_MAX_DELAY);
+  status = HAL_UART_Receive(huart_id, pData, Size, HAL_MAX_DELAY);
 
   return (int16_t)status;
 }
@@ -50,7 +50,7 @@ int16_t uart_transmit_nonblocking(uint8_t *pData, uint16_t Size)
 {
   HAL_StatusTypeDef status;
 
-  status = HAL_UART_Transmit_IT(&huart_id, pData, Size);
+  status = HAL_UART_Transmit_IT(huart_id, pData, Size);
 
   return (int16_t)status;
 }
@@ -80,7 +80,7 @@ int16_t uart_receive_nonblocking(uint8_t *pData, uint16_t Size)
 {
   HAL_StatusTypeDef status;
 
-  status = HAL_UART_Receive_IT(&huart_id, pData, Size);
+  status = HAL_UART_Receive_IT(huart_id, pData, Size);
 
   return (int16_t)status;
 }
@@ -131,7 +131,7 @@ int16_t uart_receive_nonblocking_start()
 {
   HAL_StatusTypeDef status;
 
-  status = HAL_UART_Receive_IT(&huart_id, rxBuffer, RX_BUFFER_SIZE);
+  status = HAL_UART_Receive_IT(huart_id, rxBuffer, RX_BUFFER_SIZE);
 
   return (uint16_t)status;
 }
@@ -139,7 +139,7 @@ int16_t uart_receive_nonblocking_start()
 /**
  * @brief  UARTの初期化
  */
-int16_t uart_init(UART_HandleTypeDef huart)
+int16_t uart_init(UART_HandleTypeDef *huart)
 {
     huart_id = huart;
 

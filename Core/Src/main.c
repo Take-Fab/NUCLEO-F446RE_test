@@ -104,10 +104,13 @@ int main(void)
   MX_TIM6_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  uart_init(&huart3);
+
   const int rcv_buff_size = 4;
   uint8_t rcv_buff[rcv_buff_size];
 
-  HAL_UART_Receive_IT(&huart3, rcv_buff, rcv_buff_size);
+  uart_receive_nonblocking(rcv_buff, rcv_buff_size);
 
   /* USER CODE END 2 */
 
@@ -121,16 +124,15 @@ int main(void)
     if (isTimHit()) {
       led_toggle();
 
-      //HAL_UART_Transmit_IT(&huart3, (uint8_t *)"#", 1);
+      //HAL_UART_Transmit(&huart3, (uint8_t *)"#", 1, HAL_MAX_DELAY);
+      //uart_transimit_nonblocking((uint8_t *)"#", 1);
 
     }
 
     if (uart_is_received()) {
-	      //HAL_UART_Transmit_IT(&huart3, (uint8_t *)"-", 1);
-	//HAL_UART_Transmit_IT(&huart3, "Hit!", 4);
-      HAL_UART_Transmit_IT(&huart3, rcv_buff, rcv_buff_size);
+      uart_transmit_nonblocking(rcv_buff, rcv_buff_size);
 
-      HAL_UART_Receive_IT(&huart3, rcv_buff, rcv_buff_size);
+      uart_receive_nonblocking(rcv_buff, rcv_buff_size);
     }
 
   }
