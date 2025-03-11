@@ -105,12 +105,11 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  uart_init(&huart3);
-
-  const int rcv_buff_size = 4;
+  const int rcv_buff_size = 16;
   uint8_t rcv_buff[rcv_buff_size];
 
-  uart_receive_nonblocking(rcv_buff, rcv_buff_size);
+  uart_init(&huart3);  // UART3の初期化
+  uart_receive_start();  // 受信開始
 
   /* USER CODE END 2 */
 
@@ -121,18 +120,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if (isTimHit()) {
-      led_toggle();
+    if (isTimHit()) {  // 定間隔処理
+      led_toggle();  // LEDをトグル
 
-      //HAL_UART_Transmit(&huart3, (uint8_t *)"#", 1, HAL_MAX_DELAY);
-      //uart_transimit_nonblocking((uint8_t *)"#", 1);
+      //uart_transimit_nonblocking((uint8_t *)"#", 1);  // Beacon 送信
 
     }
 
-    if (uart_is_received()) {
-      uart_transmit_nonblocking(rcv_buff, rcv_buff_size);
-
-      uart_receive_nonblocking(rcv_buff, rcv_buff_size);
+    if (uart_is_received()) {  // UART受信チェック
+      // 受信データを取得して送信
+      uint16_t size;
+      size = uart_get_receive_data(rcv_buff, rcv_buff_size);
+      uart_transmit_nonblocking(rcv_buff, size);
     }
 
   }
